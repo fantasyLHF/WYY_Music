@@ -9,7 +9,9 @@ import axios from "axios";
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {//axios的配置http://musicapi.leanapp.cn/
-  baseURL: 'http://music.kele8.cn/'
+  // baseURL: 'http://music.kele8.cn/'
+  baseURL: 'http://musicapi.leanapp.cn/'
+  // baseURL: "https://neteasecloudmusicapi.vercel.app/"
   // baseURL: process.env.baseURL || process.env.apiUrl || ""//设置请求的域名
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control

@@ -4,7 +4,7 @@
       <!-- {{ data }} -->
       <div class="top">{{ data | name }}</div>
       <div class="bottom">
-        <i v-if="true"></i>
+        <i v-if="flag"></i>
         <!-- {{ data.song.album.artists[0].name }}-{{ data.song.album.name }} -->
         {{ data | authorname }}-{{ data | lname }}
       </div>
@@ -19,38 +19,35 @@ export default {
     return {};
   },
   computed: {
-    // flag() {
-    //   if (this.data.song.privilege.maxbr > 320000) {
-    //     return true;
-    //   }
-    //   return false;
-    // },
+    flag() {
+      if (this.data.privileges[0].maxbr > 320000) {
+        return true;
+      }
+      return false;
+    },
   },
   filters: {
     name(v) {
       if (v) {
-        return v.name;
+        return v.songs[0].name;
       } else {
         return null;
       }
     },
     lname(v) {
       if (v) {
-        return v.al.name;
+        return v.songs[0].al.name;
       } else {
         return null;
       }
     },
     authorname(v) {
       if (v) {
-        return v.ar[0].name;
+        return v.songs[0].ar[0].name;
       } else {
         return null;
       }
     },
-  },
-  mounted() {
-    console.log(this.data);
   },
 };
 </script>

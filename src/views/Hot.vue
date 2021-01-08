@@ -7,16 +7,19 @@
         <div class="bot">{{ date }}</div>
       </div>
     </div>
+    <Loading v-if="data.length <= 0" />
     <div class="hotList">
       <a class="item" href="" v-for="(v, i) in data" :key="i">
-        <span>{{ i | doNum }}</span>
+        <span :class="{ beRed: i < 3 }">{{ i | doNum }}</span>
         <Hotlist class="myA" :data="v"></Hotlist>
       </a>
     </div>
+    <footer>查看完整榜单 <span>></span></footer>
   </div>
 </template>
 <script>
 import Hotlist from "../components/Hotlist";
+import Loading from "../components/Loading";
 export default {
   data() {
     return {
@@ -25,6 +28,7 @@ export default {
   },
   components: {
     Hotlist,
+    Loading,
   },
   computed: {
     date() {
@@ -46,9 +50,8 @@ export default {
       var arr = data.data.playlist.trackIds;
       for (let i = 0; i < 20; i++) {
         this.axios(`/song/detail?ids=${arr[i].id}`).then((tdata) => {
-          theData[i] = tdata.data.songs[0];
+          theData[i] = tdata.data;
           this.data = [...theData];
-          console.log(this.data[i].id);
         });
       }
     });
@@ -121,10 +124,24 @@ export default {
         height: 55px;
         text-align: center;
         line-height: 55px;
+        color: #999;
+        &.beRed {
+          color: #df3436;
+        }
       }
       .myA {
         flex: 1;
       }
+    }
+  }
+  footer {
+    height: 55px;
+    line-height: 55px;
+    text-align: center;
+    color: rgb(153, 153, 153);
+    font-size: 14px;
+    span {
+      color: rgb(199, 195, 195);
     }
   }
 }

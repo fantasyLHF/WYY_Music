@@ -1,8 +1,10 @@
 <template>
   <div class="box">
     <Title>推荐歌单</Title>
+    <Loading v-if="data.length <= 0" />
     <Imglist :data="data" />
     <Title>最新音乐</Title>
+    <Loading v-if="NewData.length <= 0" />
     <Newlist :data="NewData" />
     <footer>
       <svg
@@ -150,6 +152,7 @@
 import Title from "../components/Title";
 import Imglist from "../components/Imglist";
 import Newlist from "../components/Newlist";
+import Loading from "../components/Loading";
 export default {
   data() {
     return {
@@ -161,6 +164,7 @@ export default {
     Title,
     Imglist,
     Newlist,
+    Loading,
   },
   beforeRouteEnter(to, from, next) {
     // 在渲染该组件的对应路由被 confirm 前调用
