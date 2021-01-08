@@ -3,19 +3,25 @@
     <h3 v-show="true">搜索"{{ myinput }}"</h3>
     <!-- {{ changedata }} -->
     <ul>
-      <li v-for="(v, i) in changedata" :key="i">
-        <i></i><span>{{ v.name }}</span>
+      <li @click="goto" v-for="(v, i) in changedata" :key="i">
+        <i></i><span>{{ v.keyword }}</span>
       </li>
     </ul>
+    <Loading v-if="changedata.length <= 0 && myinput != ''" />
   </div>
 </template>
 <script>
-// import Loading from "../components/Loading";
+import Loading from "../components/Loading";
 export default {
-  //   components: {
-  //     Loading,
-  //   },
+  components: {
+    Loading,
+  },
   props: ["changedata", "myinput"],
+  methods: {
+    goto() {
+      this.$router.push("/search/list");
+    },
+  },
   //   computed: {
   //     data() {
   //       if (this.changedata) {

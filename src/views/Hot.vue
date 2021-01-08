@@ -7,13 +7,13 @@
         <div class="bot">{{ date }}</div>
       </div>
     </div>
-    <Loading v-if="data.length <= 0" />
-    <div class="hotList">
-      <a class="item" href="" v-for="(v, i) in data" :key="i">
-        <span :class="{ beRed: i < 3 }">{{ i | doNum }}</span>
-        <Hotlist class="myA" :data="v"></Hotlist>
-      </a>
-    </div>
+    <Loading v-if="data.length <= 0" /><keep-alive>
+      <div class="hotList">
+        <a class="item" href="" v-for="(v, i) in data" :key="i">
+          <span :class="{ beRed: i < 3 }">{{ i | doNum }}</span>
+          <Hotlist class="myA" :data="v"></Hotlist>
+        </a></div
+    ></keep-alive>
     <footer @click="add">{{ message }}</footer>
   </div>
 </template>
@@ -41,7 +41,6 @@ export default {
         return;
       }
       this.flag = false;
-      console.log(this.num);
       if (this.num >= 10) {
         this.message = "全部加载完成了!";
         return;

@@ -8,10 +8,16 @@
           placeholder="搜索歌曲、歌手、专辑"
           @input="changeSearchPage"
           v-model="myinput"
+          @keydown.enter="kdown"
         />
       </div>
     </div>
-    <router-view :changedata="changedata" :myinput="myinput" />
+    <keep-alive
+      ><router-view
+        :changedata="changedata"
+        :myinput="myinput"
+        :mysearch="mysearch"
+    /></keep-alive>
   </div>
 </template>
 <script>
@@ -20,18 +26,23 @@ export default {
     return {
       myinput: "",
       changedata: [],
+      mysearch: ["四季予你", "海阔天空"],
     };
   },
   watch: {
     myinput(v) {
       if (v) {
-        this.axios(`/search/suggest?keywords= ${v}`).then((data) => {
-          if (data.data.result.songs != undefined) {
-            this.changedata = data.data.result.songs;
-          } else {
-            this.changedata = [];
+        this.axios(`/search/suggest?keywords= ${v}&type=mobile`).then(
+          (data) => {
+            // console.log(data);
+            // if (data.data.result.songs != undefined) {
+            //   this.changedata = data.data.result.songs;
+            // } else {
+            //   this.changedata = [];
+            // }
+            this.changedata = data.data.result.allMatch;
           }
-        });
+        );
       } else {
         this.changedata = [];
       }
@@ -43,6 +54,13 @@ export default {
         return;
       }
       this.$router.push("/search/tips");
+    },
+    kdown() {
+      if (this.myinput) {
+        this.mysearch.push(this.myinput);
+        this.myinput = "";
+        this.$router.push("/search/list");
+      }
     },
   },
 };

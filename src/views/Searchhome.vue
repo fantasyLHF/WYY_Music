@@ -3,13 +3,15 @@
     <section class="hotSearch">
       <h3>热门搜索</h3>
       <ul>
-        <li v-for="(v, i) in data" :key="i">{{ v.first }}</li>
+        <li v-for="(v, i) in data" :key="i" @click="add(v.first)">
+          {{ v.first }}
+        </li>
       </ul>
     </section>
     <Loading v-if="this.data.length <= 0" />
     <section class="searched">
       <ul>
-        <li v-for="(v, i) in mysearch" :key="i">
+        <li @click="trun" v-for="(v, i) in mysearch" :key="i">
           <i></i>
           <div>
             <div>{{ v }}</div>
@@ -30,9 +32,9 @@ export default {
   data() {
     return {
       data: [],
-      mysearch: ["四季予你", "海阔天空"],
     };
   },
+  props: ["mysearch"],
   created() {
     this.axios("/search/hot").then((data) => {
       this.data = data.data.result.hots;
@@ -41,6 +43,13 @@ export default {
   methods: {
     deleteS(i) {
       this.mysearch.splice(i, 1);
+    },
+    add(v) {
+      this.mysearch.push(v);
+      this.$router.push("/search/list");
+    },
+    trun() {
+      this.$router.push("/search/list");
     },
   },
 };

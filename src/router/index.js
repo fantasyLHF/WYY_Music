@@ -35,6 +35,11 @@ const routes = [
             name: 'Searchtips',
             component: () => import('../views/Searchtips.vue')
           },
+          {//搜索提示页面
+            path: 'list',
+            name: 'Searchlist',
+            component: () => import('../views/Searchlist.vue')
+          },
         ]
       },
     ]
