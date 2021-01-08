@@ -14,7 +14,7 @@
         <Hotlist class="myA" :data="v"></Hotlist>
       </a>
     </div>
-    <footer>查看完整榜单 <span>></span></footer>
+    <footer @click="add">{{ message }}</footer>
   </div>
 </template>
 <script>
@@ -24,11 +24,46 @@ export default {
   data() {
     return {
       data: [],
+      num: 1,
+      message: "查看完整榜单 >",
+      flag: true,
+      alldata: [],
     };
   },
   components: {
     Hotlist,
     Loading,
+  },
+  methods: {
+    add() {
+      if (!this.flag) {
+        console.log(111);
+        return;
+      }
+      this.flag = false;
+      console.log(this.num);
+      if (this.num >= 10) {
+        this.message = "全部加载完成了!";
+        return;
+      }
+      this.num++;
+      let theData = [];
+      let count = 0;
+      this.message = "loading...";
+      for (let i = 0; i < 20; i++) {
+        this.axios(
+          `/song/detail?ids=${this.alldata[i + (this.num - 1) * 20].id}`
+        ).then((tdata) => {
+          count++;
+          theData[i] = tdata.data;
+          if (count == 20) {
+            this.message = "查看完整榜单 >";
+            this.flag = true;
+            this.data = this.data.concat(theData);
+          }
+        });
+      }
+    },
   },
   computed: {
     date() {
@@ -44,18 +79,23 @@ export default {
       return "更新日期:" + month + "月" + day + "日";
     },
   },
-  created() {
-    let theData = [];
-    this.axios("/top/list?idx=1").then((data) => {
-      var arr = data.data.playlist.trackIds;
-      for (let i = 0; i < 20; i++) {
-        this.axios(`/song/detail?ids=${arr[i].id}`).then((tdata) => {
-          theData[i] = tdata.data;
-          this.data = [...theData];
-        });
-      }
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.num = 1;
+      vm.data = [];
+      let theData = [];
+      vm.axios("/top/list?idx=1").then((data) => {
+        vm.alldata = data.data.playlist.trackIds;
+        for (let i = 0; i < 20; i++) {
+          vm.axios(`/song/detail?ids=${vm.alldata[i].id}`).then((tdata) => {
+            theData[i] = tdata.data;
+            vm.data = [...theData];
+          });
+        }
+      });
     });
   },
+
   filters: {
     doNum(v) {
       v = v + 1;

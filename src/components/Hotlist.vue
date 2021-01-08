@@ -5,7 +5,6 @@
       <div class="top">{{ data | name }}</div>
       <div class="bottom">
         <i v-if="flag"></i>
-        <!-- {{ data.song.album.artists[0].name }}-{{ data.song.album.name }} -->
         {{ data | authorname }}-{{ data | lname }}
       </div>
     </div>
@@ -16,14 +15,20 @@
 export default {
   props: ["data"],
   data() {
-    return {};
+    return {
+      mydata: [],
+    };
   },
   computed: {
     flag() {
-      if (this.data.privileges[0].maxbr > 320000) {
-        return true;
+      if (this.data) {
+        if (this.data.privileges[0].maxbr > 320000) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
       }
-      return false;
     },
   },
   filters: {

@@ -23,7 +23,19 @@ const routes = [
       {//搜索页面
         path: 'search',
         name: 'Search',
-        component: () => import('../views/Search.vue')
+        component: () => import('../views/Search.vue'),
+        children: [
+          {//搜索页面首页
+            path: '',
+            name: 'Searchhome',
+            component: () => import('../views/Searchhome.vue')
+          },
+          {//搜索提示页面
+            path: 'tips',
+            name: 'Searchtips',
+            component: () => import('../views/Searchtips.vue')
+          },
+        ]
       },
     ]
 
