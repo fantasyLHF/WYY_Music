@@ -8,8 +8,9 @@
       </div>
     </div>
     <div class="hotList">
-      <a href="" v-for="(v, i) in data" :key="i">
-        <Hotlist></Hotlist>
+      <a class="item" href="" v-for="(v, i) in data" :key="i">
+        <span>{{ i | doNum }}</span>
+        <Hotlist class="myA" :data="v"></Hotlist>
       </a>
     </div>
   </div>
@@ -51,6 +52,15 @@ export default {
         });
       }
     });
+  },
+  filters: {
+    doNum(v) {
+      v = v + 1;
+      if (v < 10) {
+        v = "0" + v;
+      }
+      return v;
+    },
   },
   // mounted() {
   // this.axios("/top/list?idx=1").then((data) => {
@@ -105,7 +115,16 @@ export default {
   }
   .hotList {
     .item {
-      display: block;
+      display: flex;
+      span {
+        width: 42px;
+        height: 55px;
+        text-align: center;
+        line-height: 55px;
+      }
+      .myA {
+        flex: 1;
+      }
     }
   }
 }

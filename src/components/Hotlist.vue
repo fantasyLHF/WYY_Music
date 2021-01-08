@@ -1,10 +1,12 @@
 <template>
   <div class="box">
     <div class="left">
-      <div class="top">{{ data.name }}</div>
+      <!-- {{ data }} -->
+      <div class="top">{{ data | name }}</div>
       <div class="bottom">
-        <i v-if="flag"></i>
-        {{ data.song.album.artists[0].name }}-{{ data.song.album.name }}
+        <i v-if="true"></i>
+        <!-- {{ data.song.album.artists[0].name }}-{{ data.song.album.name }} -->
+        {{ data | authorname }}-{{ data | lname }}
       </div>
     </div>
     <div class="right"></div>
@@ -13,13 +15,42 @@
 <script>
 export default {
   props: ["data"],
+  data() {
+    return {};
+  },
   computed: {
-    flag() {
-      if (this.data.song.privilege.maxbr > 320000) {
-        return true;
+    // flag() {
+    //   if (this.data.song.privilege.maxbr > 320000) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
+  },
+  filters: {
+    name(v) {
+      if (v) {
+        return v.name;
+      } else {
+        return null;
       }
-      return false;
     },
+    lname(v) {
+      if (v) {
+        return v.al.name;
+      } else {
+        return null;
+      }
+    },
+    authorname(v) {
+      if (v) {
+        return v.ar[0].name;
+      } else {
+        return null;
+      }
+    },
+  },
+  mounted() {
+    console.log(this.data);
   },
 };
 </script>
