@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <a href="" v-for="v in data" :key="v.id">
+    <a @click.prevent="trun(v.id)" href="" v-for="v in data" :key="v.id">
       <List :data="v"></List>
     </a>
   </div>
@@ -11,6 +11,11 @@ export default {
   props: ["data"],
   components: {
     List,
+  },
+  methods: {
+    trun(id) {
+      this.$router.push("/Play/" + id);
+    },
   },
 };
 </script>

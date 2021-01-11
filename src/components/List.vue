@@ -54,8 +54,10 @@ export default {
     }
   }
   .right {
-    width: 42px;
+    width: 22px;
+    padding: 0 10px;
     height: 55px;
+    margin-right: 10px;
     background: url("../assets/img/index_icon_2x.png") no-repeat -24px 20px;
     background-size: 166px 97px;
     // width: 22px;

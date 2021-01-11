@@ -3,11 +3,11 @@
     <h3 v-show="true">搜索"{{ myinput }}"</h3>
     <!-- {{ changedata }} -->
     <ul>
-      <li @click="goto" v-for="(v, i) in changedata" :key="i">
+      <li @click="goto(v.keyword)" v-for="(v, i) in tip" :key="i">
         <i></i><span>{{ v.keyword }}</span>
       </li>
     </ul>
-    <Loading v-if="changedata.length <= 0 && myinput != ''" />
+    <Loading v-show="flag" />
   </div>
 </template>
 <script>
@@ -16,10 +16,19 @@ export default {
   components: {
     Loading,
   },
-  props: ["changedata", "myinput"],
+  computed: {
+    flag() {
+      if (this.myinput != "" && this.tip.length <= 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  props: ["tip", "myinput"],
   methods: {
-    goto() {
-      this.$router.push("/search/list");
+    goto(v) {
+      this.$router.push("/search/list/" + v);
     },
   },
   //   computed: {
@@ -37,6 +46,7 @@ export default {
 .box {
   width: 100%;
   h3 {
+    overflow: hidden;
     font-size: 15px;
     color: rgb(80, 125, 175);
     height: 50px;
@@ -49,6 +59,7 @@ export default {
       display: flex;
       height: 45px;
       padding-left: 10px;
+      overflow: hidden;
       i {
         width: 15px;
         margin-right: 7px;

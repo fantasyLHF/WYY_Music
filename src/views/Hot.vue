@@ -9,7 +9,13 @@
     </div>
     <Loading v-if="data.length <= 0" /><keep-alive>
       <div class="hotList">
-        <a class="item" href="" v-for="(v, i) in data" :key="i">
+        <a
+          class="item"
+          href=""
+          v-for="(v, i) in data"
+          :key="i"
+          @click.prevent="trun(v.songs[0].id)"
+        >
           <span :class="{ beRed: i < 3 }">{{ i | doNum }}</span>
           <Hotlist class="myA" :data="v"></Hotlist>
         </a></div
@@ -35,6 +41,9 @@ export default {
     Loading,
   },
   methods: {
+    trun(id) {
+      this.$router.push("/play/" + id);
+    },
     add() {
       if (!this.flag) {
         console.log(111);

@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <a href="" v-for="v in data" :key="v.id">
+    <a @click.prevent="goto(v.id)" href="" v-for="v in data" :key="v.id">
       <span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20">
           <path
@@ -24,6 +24,11 @@
 </template>
 <script>
 export default {
+  methods: {
+    goto(id) {
+      this.$router.push("/songform/" + id);
+    },
+  },
   props: ["data"],
   filters: {
     formateNum(v) {

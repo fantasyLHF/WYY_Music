@@ -36,15 +36,32 @@ const routes = [
             component: () => import('../views/Searchtips.vue')
           },
           {//搜索提示页面
-            path: 'list',
+            path: 'list/:keyword',
             name: 'Searchlist',
-            component: () => import('../views/Searchlist.vue')
+            component: () => import('../views/Searchlist.vue'),
+            props: true
           },
         ]
       },
     ]
-
   },
+  {//播放页面
+    path: '/play/:id',
+    name: 'Play',
+    component: () => import('../pages/Play'),
+    props: true
+  },
+  {//表单页面
+    path: '/songform/:id',
+    name: 'Songform',
+    component: () => import('../pages/Songform'),
+    props: true
+  },
+  {//登录页面
+    path: '/login',
+    name: 'Login',
+    component: () => import('../pages/Login'),
+  }
 
 ]
 
@@ -54,5 +71,18 @@ const router = new VueRouter({
   routes,
   linkExactActiveClass: 'myactive'
 })
+router.beforeEach((to, from, next) => {
+  if (to.name == 'Home' | to.name == 'Play' | to.name == 'Songform') {
 
+    let username = sessionStorage.getItem('username');
+    let password = sessionStorage.getItem('password');
+    if (username == "hokv" && password == "gzu") {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 export default router

@@ -15,8 +15,9 @@
     <keep-alive
       ><router-view
         :changedata="changedata"
-        :myinput="myinput"
         :mysearch="mysearch"
+        :tip="tip"
+        :myinput="myinput"
     /></keep-alive>
   </div>
 </template>
@@ -27,24 +28,42 @@ export default {
       myinput: "",
       changedata: [],
       mysearch: ["四季予你", "海阔天空"],
+      tip: [],
+      timer: null,
+      flag: true,
     };
   },
   watch: {
     myinput(v) {
-      if (v) {
-        this.axios(`/search/suggest?keywords= ${v}&type=mobile`).then(
-          (data) => {
-            // console.log(data);
-            // if (data.data.result.songs != undefined) {
-            //   this.changedata = data.data.result.songs;
-            // } else {
-            //   this.changedata = [];
-            // }
-            this.changedata = data.data.result.allMatch;
-          }
-        );
+      if (v && this.flag) {
+        this.flag = false;
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          this.axios(`/search/suggest?keywords= ${v}&type=mobile`)
+            .then((data) => {
+              this.flag = true;
+              if (data.data.result.allMatch) {
+                this.tip = data.data.result.allMatch;
+              } else if (data.data.result) {
+                let arr = [];
+                data.data.result.order.forEach((v) => {
+                  data.data.result[v].forEach((vl) => {
+                    let obj = {};
+                    obj.keyword = vl.name;
+                    arr.push(obj);
+                  });
+                });
+                this.tip = arr;
+              } else {
+                this.tip = [];
+              }
+            })
+            .catch((e) => {
+              console.log("请求错误", e);
+            });
+        }, 300);
       } else {
-        this.changedata = [];
+        this.tip = [];
       }
     },
   },
@@ -58,8 +77,7 @@ export default {
     kdown() {
       if (this.myinput) {
         this.mysearch.push(this.myinput);
-        this.myinput = "";
-        this.$router.push("/search/list");
+        this.$router.push("/search/list/" + this.myinput);
       }
     },
   },

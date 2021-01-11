@@ -11,11 +11,11 @@
     <Loading v-if="this.data.length <= 0" />
     <section class="searched">
       <ul>
-        <li @click="trun" v-for="(v, i) in mysearch" :key="i">
+        <li @click.stop="trun(v)" v-for="(v, i) in mysearch" :key="i">
           <i></i>
           <div>
             <div>{{ v }}</div>
-            <i @click="deleteS(i)"></i>
+            <i @click.stop="deleteS(i)"></i>
           </div>
         </li>
       </ul>
@@ -36,9 +36,13 @@ export default {
   },
   props: ["mysearch"],
   created() {
-    this.axios("/search/hot").then((data) => {
-      this.data = data.data.result.hots;
-    });
+    this.axios("/search/hot")
+      .then((data) => {
+        this.data = data.data.result.hots;
+      })
+      .catch((e) => {
+        console.log("请求错误", e);
+      });
   },
   methods: {
     deleteS(i) {
@@ -46,10 +50,10 @@ export default {
     },
     add(v) {
       this.mysearch.push(v);
-      this.$router.push("/search/list");
+      this.$router.push("/search/list/" + v);
     },
-    trun() {
-      this.$router.push("/search/list");
+    trun(v) {
+      this.$router.push("/search/list/" + v);
     },
   },
 };
