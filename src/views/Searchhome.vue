@@ -50,10 +50,10 @@ export default {
     },
     add(v) {
       this.mysearch.push(v);
-      this.$router.push("/search/list/" + v);
+      this.$router.push("/search/list/" + v).catch(() => {});
     },
     trun(v) {
-      this.$router.push("/search/list/" + v);
+      this.$router.push("/search/list/" + v).catch(() => {});
     },
   },
 };

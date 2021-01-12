@@ -9,10 +9,10 @@ module.exports = {//配置页面
                     changeOrigin: true
                     // 当你请求 /search?123123 时 会代理到 'http://musicapi.leanapp.cn/search?123123'
                 },
-                // '/personalized/newsong': {
-                //     target: 'http://musicapi.leanapp.cn/',
-                //     changeOrigin: true
-                // }
+                "/lyric": {
+                    target: 'http://music.kele8.cn/',
+                    changeOrigin: true
+                }
             }
         }
     }

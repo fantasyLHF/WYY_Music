@@ -28,7 +28,7 @@ export default {
   props: ["tip", "myinput"],
   methods: {
     goto(v) {
-      this.$router.push("/search/list/" + v);
+      this.$router.push("/search/list/" + v).catch(() => {});
     },
   },
   //   computed: {

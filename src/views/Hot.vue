@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     trun(id) {
-      this.$router.push("/play/" + id);
+      this.$router.push("/play/" + id).catch(() => {});
     },
     add() {
       if (!this.flag) {

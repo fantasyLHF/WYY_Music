@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import particlesConfig from "../../public/particles.json";
+import particlesConfig from "../assets/lib/particles.json";
 export default {
   data() {
     return {
@@ -56,7 +56,8 @@ export default {
   overflow: hidden;
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  min-height: 560px;
   background-color: rgb(197, 20, 182);
   background-repeat: no-repeat;
   background-size: cover;

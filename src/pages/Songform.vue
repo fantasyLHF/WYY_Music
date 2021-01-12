@@ -78,11 +78,11 @@
       </div>
       <ul>
         <li v-for="(v, i) in comments" :key="i">
-          <div class="toux"><img :src="v.user.avatarUrl" alt="" /></div>
+          <div class="toux"><img :src="avatarUrl" alt="" /></div>
           <div class="txt">
             <div class="t">
               <div class="l">
-                <div class="lt">{{ v.user.nickname }}</div>
+                <div class="lt">{{ v | nickname }}</div>
                 <div class="lb">{{ v.time | deltime }}</div>
               </div>
               <div class="r">
@@ -100,7 +100,21 @@
 <script>
 import Loading from "../components/Loading";
 export default {
+  computed: {
+    avatarUrl() {
+      return function (data) {
+        if (data) {
+          return data.user.avatarUrl;
+        } else {
+          return "";
+        }
+      };
+    },
+  },
   filters: {
+    nickname(v) {
+      return v.nickname;
+    },
     formateNum(v) {
       if (v >= 10000) {
         return (v / 10000).toFixed(1) + "万";
@@ -129,7 +143,6 @@ export default {
   },
   methods: {
     showa() {
-      console.log(11111);
       for (let i = 10; i < this.allid.length; i++) {
         this.axios("/song/detail?ids=" + this.allid[i].id).then((data) => {
           this.listdata.push(data.data.songs[0]);
@@ -137,14 +150,12 @@ export default {
       }
     },
     trun(i) {
-      this.$router.push("/play/" + i);
+      this.$router.push("/play/" + i).catch(() => {});
     },
     showall() {
-      console.log(222222);
       this.axios("/comment/playlist?id=" + this.id).then((d) => {
         for (let i = 10; i < d.data.comments.length; i++) {
           this.comments.push(d.data.comments[i]);
-          console.log(d.data.comments[i]);
         }
       });
     },
@@ -188,7 +199,6 @@ export default {
           for (let i = 0; i < 10; i++) {
             vm.comments.push(d.data.comments[i]);
           }
-          console.log(d);
         });
     });
   },

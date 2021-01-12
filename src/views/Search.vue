@@ -72,12 +72,12 @@ export default {
       if (window.location.href.endsWith("/search/tips")) {
         return;
       }
-      this.$router.push("/search/tips");
+      this.$router.push("/search/tips").catch(() => {});
     },
     kdown() {
       if (this.myinput) {
         this.mysearch.push(this.myinput);
-        this.$router.push("/search/list/" + this.myinput);
+        this.$router.push("/search/list/" + this.myinput).catch(() => {});
       }
     },
   },
