@@ -45,7 +45,6 @@
       ref="audio"
       :src="url"
       autoplay="autoplay"
-      controls="controls"
     ></audio>
   </div>
 </template>

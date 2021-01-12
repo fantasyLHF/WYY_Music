@@ -4,11 +4,7 @@ module.exports = {//配置页面
     configureWebpack: {//配置代理
         devServer: {
             proxy: {
-                "/a": {
-                    target: 'http://musicapi.leanapp.cn/',
-                    changeOrigin: true
-                    // 当你请求 /search?123123 时 会代理到 'http://musicapi.leanapp.cn/search?123123'
-                },
+
                 "/lyric": {
                     target: 'http://music.kele8.cn/',
                     changeOrigin: true
