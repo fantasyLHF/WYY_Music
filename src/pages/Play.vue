@@ -168,7 +168,7 @@ export default {
           vm.al = vm.data.al;
           vm.urli = vm.al.picUrl;
           vm.url = ` https://music.163.com/song/media/outer/url?id=${vm.id}.mp3`;
-          return fetch("/lyric?id=" + vm.id);
+          return fetch("http://music.kele8.cn/lyric?id=" + vm.id);
         })
         .then((res) => {
           return res.json();

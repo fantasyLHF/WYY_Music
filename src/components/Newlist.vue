@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     trun(id) {
-      this.$router.push("/Play/" + id);
+      this.$router.push("/Play/" + id).catch(() => {});
     },
   },
 };

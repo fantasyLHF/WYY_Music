@@ -26,7 +26,7 @@
 export default {
   methods: {
     goto(id) {
-      this.$router.push("/songform/" + id);
+      this.$router.push("/songform/" + id).catch(() => {});
     },
   },
   props: ["data"],

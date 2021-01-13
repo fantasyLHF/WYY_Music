@@ -21,7 +21,7 @@ export default {
   props: ["data", "myinput"],
   methods: {
     trun(v) {
-      this.$router.push("/Play/" + v);
+      this.$router.push("/Play/" + v).catch(() => {});
     },
     name(v, myinput) {
       if (v.name) {
