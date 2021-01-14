@@ -41,6 +41,7 @@
     <!-- 播放页面{{ id }}<br />
     {{ al.name }} -->
     <audio
+      muted="muted"
       @timeupdate="timeupdate"
       ref="audio"
       :src="url"
@@ -50,15 +51,6 @@
 </template>
 <script>
 export default {
-  watch: {
-    flag(V) {
-      if (V) {
-        this.trun = "trun";
-      } else {
-        this.trun = "";
-      }
-    },
-  },
   filters: {
     ctt(v) {
       let m = parseInt(v / 60);
@@ -108,6 +100,13 @@ export default {
     timeupdate(event) {
       let audio = event.target;
       let currentTime = audio.currentTime; //当前播放的时间
+      if (currentTime == 0) {
+        this.trun = "";
+        this.flag = false;
+      } else {
+        this.trun = "trun";
+        this.flag = true;
+      }
       let durationTime = audio.duration; //总时长
       this.dt = durationTime;
       this.ct = currentTime;
