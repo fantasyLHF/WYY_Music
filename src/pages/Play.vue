@@ -50,7 +50,15 @@
 </template>
 <script>
 export default {
-  computed: {},
+  watch: {
+    flag(V) {
+      if (V) {
+        this.trun = "trun";
+      } else {
+        this.trun = "";
+      }
+    },
+  },
   filters: {
     ctt(v) {
       let m = parseInt(v / 60);
@@ -114,7 +122,9 @@ export default {
         let lrcTime = this.lrcArr[i].time; //歌词的时间
         this.lrcArr[i].class = "";
         if (currentTime < lrcTime) {
-          this.lrcArr[i - 1].class = "active";
+          if (this.lrcArr[i - 1]) {
+            this.lrcArr[i - 1].class = "active";
+          }
           this.$refs.pos.style.top = -24 * (i - 4) + "px";
           break;
         }
@@ -147,8 +157,8 @@ export default {
   },
   data() {
     return {
-      trun: "trun",
-      flag: true,
+      trun: "",
+      flag: false,
       data: [],
       al: [],
       url: "",
@@ -162,6 +172,7 @@ export default {
   props: ["id"],
   beforeRouteEnter(to, from, next) {
     next((vm) => {
+      vm.flag = true;
       vm.axios("/song/detail?ids=" + vm.id)
         .then((data) => {
           vm.data = data.data.songs[0];

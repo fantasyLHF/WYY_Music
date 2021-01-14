@@ -78,19 +78,18 @@
       </div>
       <ul>
         <li v-for="(v, i) in comments" :key="i">
-          <div class="toux"><img :src="avatarUrl" alt="" /></div>
+          <div class="toux"><img :src="avatarUrl(v)" alt="" /></div>
           <div class="txt">
             <div class="t">
               <div class="l">
                 <div class="lt">{{ v | nickname }}</div>
-                <div class="lb">{{ v.time | deltime }}</div>
+                <div class="lb">{{ v | deltime }}</div>
               </div>
               <div class="r">
-                {{ v.likedCount | delcount
-                }}<img src="../assets/img/good.png" alt="" />
+                {{ v | delcount }}<img src="../assets/img/good.png" alt="" />
               </div>
             </div>
-            <div class="b">{{ v.content }}</div>
+            <div class="b">{{ v | content }}</div>
           </div>
         </li>
       </ul>
@@ -112,8 +111,17 @@ export default {
     },
   },
   filters: {
+    content(v) {
+      if (v) {
+        return v.content;
+      }
+      return v;
+    },
     nickname(v) {
-      return v.nickname;
+      if (v) {
+        return v.user.nickname;
+      }
+      return v;
     },
     formateNum(v) {
       if (v >= 10000) {
@@ -122,23 +130,31 @@ export default {
       return v;
     },
     delcount(v) {
-      if (v > 0) {
-        return v;
+      if (v) {
+        v = v.likedCount;
+        if (v > 0) {
+          return v;
+        }
+        return "";
       }
-      return "";
+      return v;
     },
     deltime(v) {
-      let time = new Date().getTime() - v;
-      let h = parseInt(time / 1000 / 60 / 60);
-      let m = parseInt((time / 1000 / 60) % 60);
-      let s = parseInt((time / 1000) % 60);
-      if (h > 0) {
-        return h + "小时前";
-      } else if (m > 0) {
-        return m + "分钟前";
-      } else {
-        return s + "秒前";
+      if (v) {
+        v = v.time;
+        let time = new Date().getTime() - v;
+        let h = parseInt(time / 1000 / 60 / 60);
+        let m = parseInt((time / 1000 / 60) % 60);
+        let s = parseInt((time / 1000) % 60);
+        if (h > 0) {
+          return h + "小时前";
+        } else if (m > 0) {
+          return m + "分钟前";
+        } else {
+          return s + "秒前";
+        }
       }
+      return v;
     },
   },
   methods: {
@@ -167,7 +183,7 @@ export default {
     return {
       allid: [],
       data: [],
-      creator: {},
+      creator: { nickname: "" },
       listdata: [],
       comments: [],
       len: 0,
@@ -179,7 +195,9 @@ export default {
       vm.axios("/playlist/detail?id=" + vm.id)
         .then((data) => {
           vm.data = data.data.playlist;
-          vm.creator = vm.data.creator;
+          if (vm.data.creator) {
+            vm.creator = vm.data.creator;
+          }
           let arr = [];
           let count = 0;
           vm.allid = vm.data.trackIds;
@@ -195,6 +213,7 @@ export default {
           return vm.axios("/comment/playlist?id=" + vm.id);
         })
         .then((d) => {
+          // console.log(d);
           vm.len = d.data.comments.length;
           for (let i = 0; i < 10; i++) {
             vm.comments.push(d.data.comments[i]);
@@ -243,6 +262,7 @@ export default {
       .im {
         position: relative;
         width: 114px;
+        min-width: 95px;
         i {
           background: rgba(217, 48, 48, 0.8);
           border-top-right-radius: 17px;
@@ -268,19 +288,22 @@ export default {
           font-size: 12px;
         }
         img {
-          height: 100%;
-          width: auto;
+          width: 114px;
+          height: auto;
         }
       }
       .other {
+        overflow: hidden;
         flex: auto;
         margin-left: 10px;
         h2 {
+          overflow: hidden;
           color: #fefefe;
           font-size: 17px;
           height: 44px;
         }
         .tx {
+          overflow: hidden;
           img {
             height: 30px;
             width: auto;

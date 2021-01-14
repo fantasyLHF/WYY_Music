@@ -5,7 +5,7 @@ module.exports = {//配置页面
         devServer: {
             proxy: {
 
-                "/lyfffric": {
+                "/lyridsgfdfgc": {
                     target: 'http://music.kele8.cn',
                     changeOrigin: true
                 }
